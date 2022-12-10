@@ -1,0 +1,58 @@
+﻿@model Users 
+@{
+    ViewData["Title"] = "AddUser";
+}
+
+<form method="post" asp-action="AddUser">
+    <div style="margin:auto;text-align:center;width:50%;border:2px dotted white" class="p-3 mt-4">
+        <div class="row">
+            <h2 class="text text-dark">Új felhasználó hozzáadása</h2>
+        </div>
+@*        <div asp-validation-summary="All"></div>*@
+        <div class="mb-3">
+            <label style="font-size:larger" asp-for="Lastname"></label>
+            <input style="height:40px;text-align:center;margin:auto;width:70%" asp-for="Lastname" class="form-control"/>
+            @*<span asp-validation-for="Lastname" class="text-danger"></span>*@
+        </div>
+        <div class="mb-3">
+            <label style="font-size:larger" asp-for="Firstname"></label>
+            <input style="height:40px;text-align:center;margin:auto;width:70%" asp-for="Firstname" class="form-control"/>
+            @*<span asp-validation-for="Firstname" class="text-danger"></span>*@
+        </div>
+        <div class="mb-3">
+            <label style="font-size:larger" asp-for="Mobile"></label>
+            <input style="height:40px;text-align:center;margin:auto;width:70%" asp-for="Mobile" class="form-control"/>
+            @*<span asp-validation-for="Mobile" class="text-danger"></span>*@
+        </div>
+        <div class="mb-3">
+            <label style="font-size:larger" asp-for="AccountNumber"></label>
+            <input style="height:40px;text-align:center;margin:auto;width:70%" asp-for="AccountNumber" class="form-control"/>
+            @*<span asp-validation-for="AccountNumber" class="text-danger"></span>*@
+        </div>
+        <h3 class="text text-light">Lakcím adatok</h3>
+        <div class="mb-3">
+            <label style="font-size:larger;color:white;" asp-for="UserAddress.City"></label>
+            <input style="height:40px;text-align:center;margin:auto;width:70%" asp-for="UserAddress.City" class="form-control"/>
+            @*<span asp-validation-for="UserAddress.City" class="text-danger"></span>*@
+        </div>
+        @{IEnumerable<Bank> objBanks = ViewData["Banks"] as IEnumerable<Bank>;}
+            <label style="font-size:larger;color:white;">Bank neve</label><br />
+            <select style="border-radius:0.25rem;height:40px;text-align:center;margin:auto;width:70%" asp-for="BankSwift" asp-items="@(new SelectList(objBanks, nameof(Bank.Swift), nameof(Bank.Name)))">
+            </select>
+        <div class="mb-3">
+            <label style="font-size:larger;color:white;" asp-for="UserAddress.Number"></label>
+            <input style="height:40px;text-align:center;margin:auto;width:70%" asp-for="UserAddress.Number" class="form-control"/>
+@*            <span asp-validation-for="UserAddress.Number" class="text-danger"></span>
+*@        </div>
+        @{
+            IEnumerable<Countries> objCountries = ViewData["Countries"] as IEnumerable<Countries>;
+        }
+        <label style="font-size:larger;color:white;">Ország</label><br />
+        <select style="border-radius:0.25rem;height:40px;text-align:center;margin:auto;width:70%" asp-for="UserAddress.Country.ID" asp-items="@(new SelectList(objCountries, nameof(Countries.ID), nameof(Countries.Name)))"></select>
+        <br />
+        <button type="submit" class="btn btn-primary" style="width:150px;margin-top:20px;">Hozzáadás</button>
+        <br />
+        <a asp-controller="Users" asp-action="Index" class="btn btn-secondary" style="width:150px;margin-top:20px;">Vissza</a>
+    </div>
+</form>
+

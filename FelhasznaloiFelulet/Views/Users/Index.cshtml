@@ -1,0 +1,176 @@
+﻿@model Users
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text">A felhasználók listája</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Users" asp-action="AddUser" class="btn btn-dark">Új felhasználó hozzáadása</a>
+        </div>
+    </div>
+</div>
+<br />
+<form method="post" asp-action="Index">
+<div id="searchDiv" class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2>Keresési feltételek</h2>
+        </div>
+    </div>
+                    <div class="row" style="width:30%">
+                        <div class="col">
+                            <label asp-for="Lastname"></label>
+                        </div>
+                        <div class="col">
+                            <input style="width:250px" asp-for="Lastname" />
+                        </div>
+                    </div>
+                    <div class="row" style="width:30%">
+                        <div class="col">
+                            <label asp-for="Firstname"></label>
+                        </div>
+                        <div class="col">
+                            <input style="width:250px" asp-for="Firstname" />
+                        </div>
+                    </div>
+                    <div class="row" style="width:30%">
+                        <div class="col">
+                            <label asp-for="UserAddress.City"></label>
+                        </div>
+                        <div class="col">
+                            <input style="width:250px" asp-for="UserAddress.City" />
+                        </div>
+                    </div>
+                    <div class="row" style="width:30%">
+                        <div class="col">
+                            <label>Bank neve:</label>
+                        </div>
+                        <div class="col">
+                            <select style="width:250px" asp-for="BankSwift" asp-items="@(new SelectList(ViewData["Banks"] as IEnumerable<Bank>, nameof(Bank.Swift), nameof(Bank.Name)))">
+                                <option value=null>Válasszon egy bankot!</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" style="width:30%">
+                        <div class="col">
+                            <label>Ország:</label>
+                        </div>
+                        <div class="col">
+                            <select style="width:250px" asp-for="UserAddress.CountryID" asp-items="@(new SelectList(ViewData["Countries"] as IEnumerable<Countries>, nameof(Countries.ID), nameof(Countries.Name)))">
+                                <option value=null>Válasszon egy országot!</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" style="width:30%">
+                        <button type="submit" class="btn btn-dark" style="width:100px">Keresés</button>
+                    </div>
+                    <br />
+                    <br />
+                </div> 
+</form>
+
+@{
+    IEnumerable<Users> userList = ViewData["userList"] as IEnumerable<Users>;
+}
+
+<table class="table table-secondary table-hover">
+    <thead>
+        <tr>
+            <th style="width: 40%">Teljes név</th>
+            <th style="width: 40%">Telefonszám</th>
+            <th style="width: 10%"></th>
+            <th style="width: 10%"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var obj in userList)
+        {
+            <tr>
+                <td>
+                    @obj.Lastname @obj.Firstname
+                </td>
+                <td>
+                    +@obj.UserAddress.Country.CountryTel@obj.Mobile
+                </td>
+                <td>
+                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#moreDataModal@(obj.ID)">További információ</button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteModal@(obj.ID)">Törlés</button> 
+                </td>
+            </tr>
+            
+            <div class="modal fade" id="moreDataModal@(obj.ID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">@obj.Lastname @obj.Firstname</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <h2>
+                        Banki adatok
+                    </h2>
+                    Bank neve: @obj.UserBank.Name
+                    <br>
+                    Bankszámlaszám: @obj.AccountNumber
+                    <br>
+                    <h2>
+                        Lakcím adatok
+                    </h2>
+                    Ország: @obj.UserAddress.Country.Name
+                    <br>
+                    Város: @obj.UserAddress.City
+                    <br>
+                    Utca, házszám: @obj.UserAddress.Number
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Vissza</button>
+                    <a asp-controller="Users" asp-action="EditUser" asp-route-id="@obj.ID" asp-route-addressid="@obj.UserAddress.ID" class="btn btn-dark">Felhasználó szerkesztése</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal fade" id="deleteModal@(obj.ID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Felhasználó törlése</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Végleg törölni akarja @obj.Lastname @obj.Firstname adatait?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégsem</button>
+                    <a asp-controller="Users" asp-action="DeleteUser" asp-route-id="@obj.ID" asp-route-addressid="@obj.UserAddress.ID" class="btn btn-primary">Törlés</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+        }
+    </tbody>
+</table>
+
+<a asp-controller="Users" asp-action="CreateJson" asp-route-lista="@userList" class="btn btn-secondary">JSON létrehozása</a>
+<br />
+<br />
+
+<div>
+    @using (Html.BeginForm("ReadFromJson", "Users", FormMethod.Post, new {enctype = "multipart/form-data"}))
+    {
+        <label id="json-upload">JSON fájl kiválasztása 
+            <input accept=".json" id="filyInput" type="file" name="postedFile"/>
+        </label>
+        <br />
+        <input class="btn btn-secondary" type="submit" value="Elküldés"/>
+    }
+</div>

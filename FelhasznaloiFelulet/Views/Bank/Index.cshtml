@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Bank> 
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text">A bankok listája</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Bank" asp-action="AddNewBank" class="btn btn-dark">Új bank hozzáadása</a>
+        </div>
+    </div>
+</div>
+<br /><br />
+
+<table class="table table-secondary table-hover">
+    <thead>
+        <tr>
+            <th style="width:30%">SWIFT kód</th>
+            <th style="width:30%">Teljes név</th>
+            <th style="width:30%">Székhelye</th>
+            <th style="width:10%"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var obj in Model)
+        {
+            <tr>
+                <td>
+                    @obj.Swift
+                </td>
+                <td>
+                    @obj.Name
+                </td>
+                <td>
+                    @obj.SeatAddress
+                </td>
+                <td>
+                    <a asp-controller="Bank" asp-action="EditBank" asp-route-swift="@obj.Swift" class="btn btn-secondary">Szerkesztés</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

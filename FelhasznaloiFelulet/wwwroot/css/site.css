@@ -1,0 +1,69 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+    margin-bottom: 60px;
+    background: rgb(47,79,79);
+    background: linear-gradient(171deg, rgba(47,79,79,1) 0%, rgba(112,169,169,1) 27%, rgba(19,32,32,1) 68%, rgba(0,0,0,1) 97%);
+}
+.listText {
+    color: #dfecec!important;
+}
+.nav-link {
+    color: #dfecec;
+    transition: color .5s ease-in-out, background-color 0.5s;
+    font-size: 20px !important;
+}
+.nav-link:hover, .nav-link:focus {
+        color: #4d8080 !important;
+}
+#privacyLink {
+    color: #dfecec !important;
+    transition: color .5s ease-in-out, background-color 0.5s;
+}
+#privacyLink:hover, #privacyLink:focus {
+    color: #4d8080 !important;
+}
+.dropdown-menu {
+    background: transparent !important;
+}
+table{
+    border: 1px solid !important;
+    border-right: 1px solid !important;
+    border-collapse: collapse;
+    width:100% !important;
+}
+th {
+    border-bottom: 1px solid;
+    border-top: 1px solid !important;
+    border-top-color: black;
+}
+input[type="file"]{
+    display: none;
+}
+#json-upload{
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: lightgrey;
+    border-radius: 5px;
+}
+#searchDiv input, #searchDiv select{
+    border:1px solid;
+    border-color: darkslategray;
+    border-radius: 30px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
